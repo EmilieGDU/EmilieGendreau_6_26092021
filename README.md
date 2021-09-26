@@ -23,4 +23,7 @@ Le dossier *backend*.
 ### Lancement de l'application ###
 1. Ouvrir un terminal dans le dossier de travail ;
 2. Se positionner à la racine du projet et exécuter la commande `npm install` ;
-3. Lancer le serveur node (en utilisant la commande `node server`) ou nodemon pour faire tourner l'API.
+3. Exécuter la commande `npm start` ;
+4. Lancer le serveur node (ou nodemon) pour faire tourner l'API en prenant soin d'exécuter le back-end sur <http://localhost:3000> uniquement.
+
+*En cas d'utilisation de VSCode, utiliser l'extension LiveShare pour faire fonctionner le serveur front-end sans avoir recours à `npm install`.*
