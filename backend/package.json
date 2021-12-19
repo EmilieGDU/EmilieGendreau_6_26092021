@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@angular/cli": "^7.0.2",
     "express": "^4.17.1"
   }
 }
