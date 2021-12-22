@@ -1,4 +1,21 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+// Loading environment variables (from .env file into process.env)
+dotenv.config();
+
+// Connection to the database
+const USER = process.env.DB_USER;
+const PASSWORD = process.env.DB_PASS;
+const HOST = process.env.DB_HOST;
+const DATABASE = process.env.DB_NAME;
+mongoose.connect(`mongodb+srv://${USER}:${PASSWORD}@${HOST}/${DATABASE}?retryWrites=true&w=majority`,
+    {useNewUrlParser: true,
+     useUnifiedTopology: true})
+    .then(() => console.log("Connexion à MongoDB réussie"))
+    .catch(() => console.log("Connexion à MongoDB échouée"));
+
 
 const app = express();
 
