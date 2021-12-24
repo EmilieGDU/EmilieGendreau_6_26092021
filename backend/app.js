@@ -16,7 +16,7 @@ mongoose.connect(`mongodb+srv://${USER}:${PASSWORD}@${HOST}/${DATABASE}?retryWri
     .then(() => console.log("Connexion à MongoDB réussie"))
     .catch(() => console.log("Connexion à MongoDB échouée"));
 
-
+    
 const app = express();
 
 // express.json() inbuilt method to recognize the incoming request object as a JSON object, and to allow access to the body of the request contained in req.body 
