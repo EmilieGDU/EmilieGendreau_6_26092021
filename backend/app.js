@@ -2,6 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
+// Importing Mongoose models
+const Utilisateur = require("./models/Utilisateur");
+const Sauce = require("./models/Sauce");
+
 // Loading environment variables (from .env file into process.env)
 dotenv.config();
 
@@ -40,6 +44,7 @@ app.use("/endpoint", (req, res, next) => { // Endpoint = route pour laquelle nou
     res.status(XXX).json(objetARenvoyer);
 });
 
+// Authentication routes
 app.post("/api/auth/signup", (req, res, next) => {
     res.status(201).json({
         message: ""
@@ -53,10 +58,15 @@ app.post("/api/auth/login", (req, res, next) => {
     });
 });
 
+// Sauce routes
 app.post("/api/sauces", (req, res, next) => {
-    res.status(201).json({
-        message: ""
+    delete req.body._id;
+    const sauce = new Sauce({
+        ...req.body
     });
+    sauce.save()
+        .then(() => res.status(201).json({message: "Sauce enregistrée."}))
+        .catch((error) => res.status(400).json({error}));
 });
 
 app.post("/api/sauces/:id/like", (req, res, next) => {
@@ -66,14 +76,30 @@ app.post("/api/sauces/:id/like", (req, res, next) => {
 });
 
 
+app.put("/api/sauces/:id", (req, res, next) => {
+    Sauce.updateOne({_id: req.params.id}, {...req.body, _id: req.params.id})
+        .then(() => res.status(200).json({message: "Sauce modifiée."}))
+        .catch((error) => res.status(400).json({error}));
+});
+
+
+app.delete("/api/sauces/:id", (req, res, next) => {
+    Sauce.deleteOne({_id: req.params.id})
+        .then(() => res.status(200).json({message: "Sauce supprimée."}))
+        .catch((error) => res.status(400).json({error}));
+});
+
+
 app.get("/api/sauces", (req, res, next) => {
-    const sauces = [];
-    res.status(200).json(sauces);
+    Sauce.find()
+        .then((sauces) => res.status(200).json(sauces))
+        .catch((error) => res.status(400).json({error}));
 });
 
 app.get("/api/sauces/:id", (req, res, next) => {
-    const sauce = {};
-    res.status(200).json(sauce);
+    Sauce.findOne({_id: req.params.id})
+        .then((sauce) => res.status(200).json(sauce))
+        .catch((error) => res.status(404).json({error}));
 });
 
 module.exports = app ;
