@@ -2,22 +2,13 @@ const express = require("express");
 
 const router = express.Router();
 
-// Importing Mongoose model
-const Utilisateur = require("../models/Utilisateur");
+// Importing utilisateurs controller
+const utilisateurCtrl = require("../controllers/utilisateurs");
 
 
 // Authentication routes
-router.post("/signup", (req, res, next) => {
-    res.status(201).json({
-        message: ""
-    });
-});
+router.post("/signup", utilisateurCtrl.signup);
+router.post("/login", utilisateurCtrl.login);
 
-router.post("/login", (req, res, next) => {
-    res.status(201).json({
-        userId: "",
-        token: ""
-    });
-});
 
 module.exports = router;
