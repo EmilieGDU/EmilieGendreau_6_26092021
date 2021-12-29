@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Importing Mongoose model
 const Utilisateur = require("../models/Utilisateur");
@@ -31,7 +32,11 @@ exports.login = (req, res, next) => {
                 }
                 res.status(200).json({
                     userId: utilisateur._id,
-                    token: "TOKEN"
+                    token: jwt.sign(
+                        {userId: utilisateur._id},
+                        "RANDOM_TOKEN_SECRET", // String to be replaced by a longer string for production
+                        {expiresIn: "24h"}
+                    )
                 });
             })
             .catch((error) => res.status(500).json({error}));
