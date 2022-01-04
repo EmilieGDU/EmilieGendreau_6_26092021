@@ -29,7 +29,7 @@ exports.deleteSauce = (req, res, next) => {
             if (!sauce) {
                 return res.status(404).json({error: new Error("Sauce non trouvée.")});
             }
-            // We check that the user making the request is the owner of the sauce
+            // We check if the user making the request is the owner of the sauce
             if (sauce.userId !== req.auth.userId) {
                 return res.status(401).json({error: new Error("Requête non autorisée.")});
             }
