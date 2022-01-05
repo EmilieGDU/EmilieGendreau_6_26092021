@@ -2,14 +2,16 @@ const express = require("express");
 
 const router = express.Router();
 
-// Importing authentication middleware
+// Importing middlewares
 const auth = require("../middleware/auth");
+const multer = require("../middleware/multer-config");
+
 // Importing sauces controller
 const sauceCtrl = require("../controllers/sauces");
 
 
 // Sauce routes
-router.post("/", auth, sauceCtrl.createSauce);
+router.post("/", auth, multer, sauceCtrl.createSauce);
 router.post("/:id/like", auth, sauceCtrl.likeSauce);
 router.put("/:id", auth, sauceCtrl.modifySauce);
 router.delete("/:id", auth, sauceCtrl.deleteSauce);
