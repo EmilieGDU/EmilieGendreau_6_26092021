@@ -1,5 +1,7 @@
 // Importing Mongoose model
 const Sauce = require("../models/Sauce");
+// Importing the NodeJS fs module (in order to access and interact with the file system)
+const fs = require("fs");
 
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
@@ -42,9 +44,12 @@ exports.deleteSauce = (req, res, next) => {
             if (sauce.userId !== req.auth.userId) {
                 return res.status(401).json({error: new Error("Requête non autorisée.")});
             }
-            Sauce.deleteOne({_id: req.params.id})
+            const filename = sauce.imageUrl.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+                Sauce.deleteOne({_id: req.params.id})
                 .then(() => res.status(200).json({message: "Sauce supprimée."}))
                 .catch((error) => res.status(400).json({error}));
+            });            
         })
         .catch((error) => res.status(400).json({error}));
 };
