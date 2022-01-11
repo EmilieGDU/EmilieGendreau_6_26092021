@@ -15,10 +15,39 @@ exports.createSauce = (req, res, next) => {
         .catch((error) => res.status(400).json({error}));
 };
 
-exports.likeSauce = (req, res, next) => {
-    // res.status(201).json({
-    //     message: ""
-    // });
+exports.likeSauce = (req, res, next) => {    
+    const like = req.body.like;
+    const userId = req.body.userId;
+    switch (like) {
+        case 1 :
+            // $inc : allows to increment or decrement an existing numeric field in MongoDB
+            // $push : allows to add a new element to an array in MongoDB
+            Sauce.updateOne({_id: req.params.id}, {$inc: {likes: 1}, $push: {usersLiked: userId}})
+                .then(() => res.status(200).json({message : "Vous aimez cette sauce."}))
+                .catch((error) => res.status(400).json({error}));
+            break;
+        case -1 :
+            Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: 1}, $push: {usersDisliked: userId}})
+                .then(() => res.status(200).json({message: "Vous n'aimez pas cette sauce."}))
+                .catch((error) => res.status(400).json({error}));
+            break;
+        case 0 :                 
+            // $pull : allows to delete an array element in MongoDB
+            Sauce.findOne({_id: req.params.id})
+                .then((sauce) => {
+                    if (sauce.usersLiked.includes(userId)) {
+                        Sauce.updateOne({_id: req.params.id}, {$inc: {likes: -1}, $pull: {usersLiked: userId}})
+                            .then(() => res.status(200).json({message: "Votre vote pour cette sauce a été annulé."}))
+                            .catch((error) => res.status(400).json({error}));
+                    }
+                    else if (sauce.usersDisliked.includes(userId)) {
+                        Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: -1}, $pull: {usersDisliked: userId}})
+                            .then(() => res.status(200).json({message: "Votre vote pour cette sauce a été annulé."}))
+                            .catch((error) => res.status(400).json({error}));
+                    };
+                })
+                .catch((error) => res.status(400).json({error}));
+    }
 };
 
 exports.modifySauce = (req, res, next) => {
