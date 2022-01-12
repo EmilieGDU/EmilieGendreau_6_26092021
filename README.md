@@ -16,14 +16,19 @@ Le front-end a été développé au préalable, à l'aide d'Angular, et a été 
 - Mettre en oeuvre des opérations CRUD de manière sécurisée.
 
 ### Architecture générale du dossier ###
-Le dossier de l'application est scindé en **deux dossiers** distincts : *backend* et *frontend*.  
-Le dossier *frontend*, dont le contenu a été fourni par OpenClassrooms, a été cloné depuis <https://github.com/OpenClassrooms-Student-Center/Web-Developer-P6>.  
-Le dossier *backend*.
+Le dossier de l'application est scindé en **deux dossiers** distincts :   
+- le dossier *frontend*, dont le contenu a été fourni par OpenClassrooms, et cloné depuis <https://github.com/OpenClassrooms-Student-Center/Web-Developer-P6> ; 
+- le dossier *backend*.
 
 ### Lancement de l'application ###
-1. Ouvrir un terminal dans le dossier de travail ;
-2. Se positionner à la racine du projet et exécuter la commande `npm install` ;
-3. Exécuter la commande `npm start` ;
-4. Lancer le serveur node (ou nodemon) pour faire tourner l'API en prenant soin d'exécuter le back-end sur <http://localhost:3000> uniquement.  
-
-*En cas d'utilisation de VSCode, utiliser l'extension LiveShare pour faire fonctionner le serveur front-end sans avoir recours à `npm install`.*
+#### Côté frontend ####
+1. Ouvrir un premier terminal dans le dossier de travail ;
+2. Se positionner dans le dossier frontend avec la commande `cd frontend` ;
+3. Exécuter la commande `npm install` pour installer les dépendances ;
+4. Exécuter la commande `npm start` pour lancer à la fois le serveur local et le navigateur.
+#### Côté backend ####
+1. Dans le dossier backend, renommer le fichier .env-deploy en .env, l'ouvrir et renseigner vos identifiants de connexion à MongoDB ;
+2. Ouvrir un second terminal dans le dossier de travail ;
+3. Se positionner dans le dossier backend avec la commande `cd backend` ;
+4. Exécuter la commande `npm install` pour installer les dépendances ;
+5. Exécuter la commande `nodemon server` pour faire tourner l'API, en prenant soin d'exécuter le back-end sur <http://localhost:3000> uniquement.
