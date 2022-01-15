@@ -1,14 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const helmet = require("helmet");
 const path = require("path");
 
 // Importing routers
-const saucesRoutes = require("./routes/sauces");
 const utilisateursRoutes = require("./routes/utilisateurs");
+const saucesRoutes = require("./routes/sauces");
 
 // Loading environment variables (from .env file into process.env)
 dotenv.config();
+
 
 // Connection to the database
 const USER = process.env.DB_USER;
@@ -24,6 +26,7 @@ mongoose.connect(`mongodb+srv://${USER}:${PASSWORD}@${HOST}/${DATABASE}?retryWri
     
 const app = express();
 
+
 // CORS error prevention (use method to apply to all routes)
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -32,16 +35,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Routes
-app.use("/endpoint", (req, res, next) => { // Endpoint = route pour laquelle nous souhaitons enregistrer cet élément de middleware = URL demandée par l'application frontend
-    // Création des objets à renvoyer selon le schéma de données spécifique requis par le frontend
-    const objetARenvoyer = {
-
-    };
-    // Ajout du code de statut à l'objet response et renvoi des données sous forme de JSON
-    res.status(XXX).json(objetARenvoyer);
-});
-
+// ROUTES
 // express.json() inbuilt method to recognize the incoming request object as a JSON object, and to allow access to the body of the request contained in req.body 
 app.use(express.json());
 
@@ -49,9 +43,12 @@ app.use(express.json());
 // path.join(__dirname, "images") to serve the absolute path (because the path provided must relate to the directory from which the Node process is started)
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-// Sauce routes
-app.use("/api/sauces", saucesRoutes);
+// Setting security-related HTTP headers to protect the app from some web vulnerabilities
+app.use(helmet());
+
 // Authentication routes
 app.use("/api/auth", utilisateursRoutes);
+// Sauce routes
+app.use("/api/sauces", saucesRoutes);
 
 module.exports = app ;

@@ -1,7 +1,5 @@
-// Importing Mongoose model
-const Sauce = require("../models/Sauce");
-// Importing the NodeJS fs module (in order to access and interact with the file system)
-const fs = require("fs");
+const Sauce = require("../models/Sauce"); // Importing Mongoose model
+const fs = require("fs"); // Importing the NodeJS fs module (in order to access and interact with the file system)
 
 
 exports.createSauce = (req, res, next) => {
@@ -54,25 +52,35 @@ exports.likeSauce = (req, res, next) => {
 
 
 exports.modifySauce = (req, res, next) => {
-    if (req.file) {
-        Sauce.findOne({_id: req.params.id})
-            .then((sauce) => {
-                const filename = sauce.imageUrl.split("/images/")[1];
-                fs.unlinkSync(`images/${filename}`);
-            })
-            .catch((error) => res.status(400).json({error}));
-    }    
-    
-    const sauceObject = req.file ?
-    {
-        ...JSON.parse(req.body.sauce),
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-    } : {
-        ...req.body
-    };    
-    
-    Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
-        .then(() => res.status(200).json({message: "Sauce modifiée."}))
+    Sauce.findOne({_id: req.params.id})
+        .then((sauce) => {
+            if (!sauce) {
+                return res.status(400).json({error: new Error("Sauce non trouvée.")});
+            }
+            // Only the owner of the sauce should be able to modify it
+            // So, we check if the user making the request is the owner of the sauce
+            if (sauce.userId !== req.auth.userId) {
+                return res.status(403).json({error: new Error("Requête non autorisée.")});
+            } 
+            else {
+                if (req.file) {
+                    const filename = sauce.imageUrl.split("/images/")[1];
+                    fs.unlinkSync(`images/${filename}`);
+                }
+            }   
+            
+            const sauceObject = req.file ?
+            {
+                ...JSON.parse(req.body.sauce),
+                imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+            } : {
+                ...req.body
+            };    
+            
+            Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
+                .then(() => res.status(200).json({message: "Sauce modifiée."}))
+                .catch((error) => res.status(400).json({error}));
+        })
         .catch((error) => res.status(400).json({error}));
 };
 
@@ -81,11 +89,12 @@ exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then((sauce) => {
             if (!sauce) {
-                return res.status(404).json({error: new Error("Sauce non trouvée.")});
+                return res.status(400).json({error: new Error("Sauce non trouvée.")});
             }
+            // Only the owner of the sauce should be able to delete it
             // We check if the user making the request is the owner of the sauce
             if (sauce.userId !== req.auth.userId) {
-                return res.status(401).json({error: new Error("Requête non autorisée.")});
+                return res.status(403).json({error: new Error("Requête non autorisée.")});
             }
             const filename = sauce.imageUrl.split("/images/")[1];
             fs.unlink(`images/${filename}`, () => {
@@ -108,5 +117,5 @@ exports.getAllSauces = (req, res, next) => {
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then((sauce) => res.status(200).json(sauce))
-        .catch((error) => res.status(404).json({error}));
+        .catch((error) => res.status(400).json({error}));
 };

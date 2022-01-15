@@ -23,18 +23,18 @@ exports.login = (req, res, next) => {
     Utilisateur.findOne({email: req.body.email})
     .then((utilisateur) => {
         if (!utilisateur) {
-            return res.status(401).json({error: "Utilisateur non trouvé."});
+            return res.status(401).json({error: "Erreur d'authentification."}); // Generic error message to avoid directing a potential hacker
         }
         bcrypt.compare(req.body.password, utilisateur.password)
             .then((valid) => {
                 if (!valid) {
-                    return res.status(401).json({error: "Mot de passe erroné."});
+                    return res.status(401).json({error: "Erreur d'authentification."}); // Generic error message to avoid directing a potential hacker
                 }
                 res.status(200).json({
                     userId: utilisateur._id,
                     token: jwt.sign(
                         {userId: utilisateur._id},
-                        "RANDOM_TOKEN_SECRET", // String to be replaced by a longer string for production
+                        process.env.tokenKey,
                         {expiresIn: "24h"}
                     )
                 });
@@ -43,3 +43,4 @@ exports.login = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({error}));
 };
+
