@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 // Importing middlewares
+const passwordValidator = require("../middleware/password_validator")
 const rateLimit = require("../middleware/rate_limit");
 
 
@@ -13,7 +14,7 @@ const utilisateurCtrl = require("../controllers/utilisateurs");
 
 // Implementing individuals routes in the router
 // Applying middlewares and assigning controller functions
-router.post("/signup", utilisateurCtrl.signup);
+router.post("/signup", passwordValidator, utilisateurCtrl.signup);
 router.post("/login", rateLimit, utilisateurCtrl.login);
 
 
