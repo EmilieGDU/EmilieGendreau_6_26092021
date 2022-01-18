@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 // Importing middlewares
-const passwordValidator = require("../middleware/password_validator")
+const passwordValidator = require("../middleware/password_validator");
 const rateLimit = require("../middleware/rate_limit");
 
 

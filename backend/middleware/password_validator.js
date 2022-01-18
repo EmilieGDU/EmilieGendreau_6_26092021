@@ -20,5 +20,6 @@ module.exports = (req, res, next) => {
         return res
             .status(400)
             .json({error : "Le mot de passe doit contenir entre 5 et 15 caractères, au minimum une majuscule et 2 chiffres, et ne comporter aucun espace."});
+            //.json({error: `Le mot de passe est trop faible ${passwordSchema.validate((req.body.password), {details: true})}`});
     }
 };
