@@ -1,5 +1,6 @@
 const express = require("express");
 
+// Creating an Express router
 const router = express.Router();
 
 // Importing middlewares
@@ -10,7 +11,8 @@ const multer = require("../middleware/multer-config");
 const sauceCtrl = require("../controllers/sauces");
 
 
-// Sauce routes
+// Implementing individuals routes in the router
+// Applying middlewares and assigning controller functions
 router.post("/", auth, multer, sauceCtrl.createSauce);
 router.post("/:id/like", auth, sauceCtrl.likeSauce);
 router.put("/:id", auth, multer, sauceCtrl.modifySauce);

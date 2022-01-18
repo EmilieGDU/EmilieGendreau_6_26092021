@@ -7,6 +7,7 @@ const MIME_TYPES = {
     "image/png": "png"
 };
 
+// Configuring path and filename for incoming files
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, "images");
@@ -18,4 +19,5 @@ const storage = multer.diskStorage({
     }
 });
 
+// Exporting the package, configured to only accept single files
 module.exports = multer({storage}).single("image");

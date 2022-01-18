@@ -10,13 +10,14 @@ On Windows, these installations require to use PowerShell in administrator mode.
 
 Then, clone this repo, and run `npm install` from the console of the backend directory.
 
-## Connection to the MongoDB database ##
+## Environment variables ##
 
 Rename the *.env-deploy* file to *.env*.
 
 Then :
 - open the *.env* file,
 - enter your MongoDB connection credentials,
+- set an encryption key for the token,
 - save and close the file.
 
 ## Usage ##

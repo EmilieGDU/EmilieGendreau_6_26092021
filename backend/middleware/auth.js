@@ -1,11 +1,15 @@
 const jwt = require("jsonwebtoken");
 
+// Authentication middleware implementation
 module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];
+        // Checking the validity of the token
         const decodedToken = jwt.verify(token, process.env.tokenKey); 
         const userId = decodedToken.userId;
-        req.auth = {userId: userId}; // Adding the userId (decoded from the token) to the request object
+        // Adding an auth object to the request object which contains the userId extrated from the token
+        // The addition within a middleware makes it available for all the following middlewares
+        req.auth = {userId: userId}; 
         if (req.body.userId && req.body.userId !== userId) {
             throw "User ID non valable.";
         }

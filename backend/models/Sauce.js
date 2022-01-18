@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Implementing a strict data schema
 const sauceSchema = mongoose.Schema({
     userId: {type: String, required: true},
     name: {type: String, required: true},
@@ -14,4 +15,5 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: [{type: String}]    
 });
 
+// Exporting the fully configured model
 module.exports = mongoose.model("Sauce", sauceSchema);

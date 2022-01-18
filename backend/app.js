@@ -12,7 +12,7 @@ const saucesRoutes = require("./routes/sauces");
 dotenv.config();
 
 
-// Connection to the database
+// Connection to the database with Mongoose package
 const USER = process.env.DB_USER;
 const PASSWORD = process.env.DB_PASS;
 const HOST = process.env.DB_HOST;
@@ -23,7 +23,8 @@ mongoose.connect(`mongodb+srv://${USER}:${PASSWORD}@${HOST}/${DATABASE}?retryWri
     .then(() => console.log("Connexion à MongoDB réussie"))
     .catch(() => console.log("Connexion à MongoDB échouée"));
 
-    
+
+// Creation of the Express app
 const app = express();
 
 
@@ -35,8 +36,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// ROUTES
-// express.json() inbuilt method to recognize the incoming request object as a JSON object, and to allow access to the body of the request contained in req.body 
+
+// Allowing access to the body of the request contained in req.body 
 app.use(express.json());
 
 // express.static() inbuilt method to serve the files contained into the images directory for each request to the /images route
@@ -46,9 +47,9 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 // Setting security-related HTTP headers to protect the app from some web vulnerabilities
 app.use(helmet());
 
-// Authentication routes
+// Registering routers for each main route of the application
 app.use("/api/auth", utilisateursRoutes);
-// Sauce routes
 app.use("/api/sauces", saucesRoutes);
+
 
 module.exports = app ;
