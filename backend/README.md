@@ -2,7 +2,9 @@
 
 ## Installation ##
 
-Here are the dependancies you need to install:
+First, create a new directory named *images*.
+
+Then, here are the dependancies you need to install:
 - NodeJS 14.0.0
 - Nodemon 2.0.15
 
