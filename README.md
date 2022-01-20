@@ -27,9 +27,7 @@ Le dossier de l'application est scindé en **deux dossiers** distincts :
 3. Exécuter la commande `npm install` pour installer les dépendances ;
 4. Exécuter la commande `npm start` pour lancer à la fois le serveur local et le navigateur.
 #### Côté backend ####
-1. Dans le dossier backend : 
-- créer un nouveau répertoire intitulé *images*, 
-- renommer le fichier *.env-deploy* en *.env*, l'ouvrir et renseigner vos identifiants de connexion à MongoDB ainsi que la clé de chiffrement du token ;
+1. Dans le dossier backend, renommer le fichier *.env-deploy* en *.env*, l'ouvrir et renseigner vos identifiants de connexion à MongoDB ainsi que la clé de chiffrement du token ;
 2. Ouvrir un second terminal dans le dossier de travail ;
 3. Se positionner dans le dossier backend avec la commande `cd backend` ;
 4. Exécuter la commande `npm install` pour installer les dépendances ;
